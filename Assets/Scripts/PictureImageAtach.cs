@@ -1,12 +1,13 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class PictureAtach : MonoBehaviour
+public class PictureImageAtach : MonoBehaviour
 {
     private string URL = "http://data.ikppbb.com/test-task-unity-data/pics/" + Picture—reator.counterImage + ".jpg";
+
+    public float downloadProgress { get; private set; }
 
     private void Awake()
     {
@@ -16,9 +17,16 @@ public class PictureAtach : MonoBehaviour
     IEnumerator LoadImage()
     {
         UnityWebRequest request= UnityWebRequestTexture.GetTexture(URL);
-        
-        yield return request.SendWebRequest();
-        
+        request.SendWebRequest();
+
+        while (!request.isDone)
+        {
+            //Debug.Log("Progress: " + request.downloadProgress * 100f + "%");
+            downloadProgress = request.downloadProgress;
+            yield return null;
+        }
+
+
 
         if (request.result == UnityWebRequest.Result.ConnectionError ||
             request.result == UnityWebRequest.Result.ProtocolError)

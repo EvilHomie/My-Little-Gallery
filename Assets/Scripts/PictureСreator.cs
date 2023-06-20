@@ -1,54 +1,65 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PictureСreator : MonoBehaviour
 {
     public GameObject pictPrefab;
     public GameObject content;
-    private RectTransform contentAreaSize;
-    public RectTransform UIScale;
+    private RectTransform contentAreaRT;
 
     public static int counterImage = 1;
-    private double initialPicNumber;
-    private int preloadPicNumber = 3;
-    private float picPlaceSize = 510; // for Height 2160
-    private float greatBorder = 2160;
-    private bool startPicLoaded = false;
+
+    private int preloadPicNumber = 4;
+    private float picDefPlaceSize = 510f; // for Height 2160
+    private float borderForSpawnPic;
+    private float uIScale;
+    private float defResWidth = 1080f;
 
     private void Start()
     {
-        picPlaceSize *= UIScale.localScale.y;
-        initialPicNumber = Math.Truncate(Screen.height / picPlaceSize);
+        contentAreaRT = content.GetComponent<RectTransform>();
 
-        contentAreaSize = content.GetComponent<RectTransform>();  
-        
+        DeviceAddaptation();
+
+        borderForSpawnPic = contentAreaRT.position.y;
+
+        CreateMorePic();
         StartPic();
     }
     void Update()
-    {        
-        if (contentAreaSize.position.y > greatBorder)
+    {
+        GreatMorePics();
+    }
+
+    void GreatMorePics()
+    {
+        if (contentAreaRT.position.y > borderForSpawnPic)
         {
-            CreatePic();
-            CreatePic();
-            greatBorder += 510;
-            Debug.Log(greatBorder);
+            CreateMorePic();
+            CreateMorePic();
+            borderForSpawnPic += picDefPlaceSize;
+            Debug.Log(borderForSpawnPic);
         }
+    }
+    void DeviceAddaptation()
+    {
+        uIScale = Screen.width / defResWidth;
+        picDefPlaceSize *= uIScale;
     }
 
     void StartPic()
     {
-        for (int i = 1; i < (initialPicNumber * 2 + preloadPicNumber); i++)
+        double picNumber = Math.Truncate(Screen.height / picDefPlaceSize);
+        Debug.Log(picNumber);
+
+        for (int i = 1; i < (picNumber * 2 + preloadPicNumber); i++)
         {
-            CreatePic();
+            CreateMorePic();
         }
-        startPicLoaded = true;
     }
 
 
-    void CreatePic()
+    void CreateMorePic()
     {
         Instantiate(pictPrefab, content.transform);
         counterImage++;
@@ -56,11 +67,11 @@ public class PictureСreator : MonoBehaviour
         if (counterImage % 2 == 0)
         {
             ChangeSizeContentArea();
-        }        
+        }
     }
 
-    void ChangeSizeContentArea ()
+    void ChangeSizeContentArea()
     {
-            contentAreaSize.sizeDelta = new Vector2(contentAreaSize.sizeDelta.x, contentAreaSize.sizeDelta.y + 510f);       
+        contentAreaRT.sizeDelta = new Vector2(contentAreaRT.sizeDelta.x, contentAreaRT.sizeDelta.y + picDefPlaceSize);
     }
 }

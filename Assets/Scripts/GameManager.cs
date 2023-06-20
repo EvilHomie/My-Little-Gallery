@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad();
     }
-
     void DontDestroyOnLoad()
     {
         if (Instance != null)
@@ -23,8 +22,18 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    void DeviceAdaptation()
+    public void OpenGalery()
     {
-
+        SceneManager.LoadSceneAsync(1);
     }
+
+    public void Exite()
+    {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit(); 
+#endif
+    }
+
 }
