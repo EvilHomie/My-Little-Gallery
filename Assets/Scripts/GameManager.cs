@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    
+
     private void Awake()
     {
         DontDestroyOnLoad();
@@ -22,9 +24,10 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void OpenGalery()
+    public void OpenLoadScreen()
     {
-        SceneManager.LoadSceneAsync(1);
+        LoadingScene.loadingSceneName = "Gallery";
+        SceneManager.LoadScene("LoadScreen");
     }
 
     public void Exite()
@@ -36,4 +39,5 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
+    
 }
