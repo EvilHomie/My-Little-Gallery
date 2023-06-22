@@ -7,45 +7,36 @@ public class SpawnPicture : MonoBehaviour
     public GameObject content; // область спавна картинок
     private RectTransform contentAreaRT; // ссылка на размеры и позицию области спавна картинок
 
-    public static int imageCurNum = 1; // следующий номер картинки
+    public static int imageCurNum; // номер картинки
     private int imageMaxNum = 66; // максимальное кол-во картинок (но лучше бы реализовать через hhtp), что бы автоматически менялось при запуске приложения.
-
-    private int preloadPicNumber = 2; // кол-во предзагруженных картинок (т.е. за пределами экрана устройства)
-    private float picSize = 510f; // стандартный размер картинки при разрешении  2160 х 1080 (размера объекта с картинкой + отступ)
+    private int preloadPicNumber = 2; // кол-во предзагруженных картинок (т.е. за пределами экрана устройства)    
     private float borderForSpawnPic; // позиция верхней рамки зоны спавна
-    private float uIScale; // коэфициент изменения интерфейса в зависимости от действительного разрешения
-    private float defResWidth = 1080f; // стандартая ширина экрана
+    
 
     // получение стартовых ссылок на компоненты и стартовых значений
-    private void Start()
+    private void Awake()
     {
         contentAreaRT = content.GetComponent<RectTransform>();
 
         borderForSpawnPic = contentAreaRT.position.y;
 
-        DeviceAddaptation();
+        imageCurNum = 1;
+
         StarterPics();
     }
 
     // отслеживание изменений позиции зоны спавна картинок 
     private void Update()
     {
-        GreatMorePics();
+        GreatMorePics();        
     }
 
-    // адаптация размеров в зависимости от разрешения экрана
-    private void DeviceAddaptation()
-    {
-        uIScale = Screen.width / defResWidth;
-        picSize *= uIScale;
-    }
+    
 
     // загрузка начальных картинок ( столько сколько поместится на экране) + кол-во предзагруженных
     private void StarterPics()
     {
-        double picNumber = Math.Truncate(Screen.height / picSize);
-
-        for (int i = 0; i < (picNumber * 2 + preloadPicNumber); i++)
+        for (int i = 0; i < (DeviceAdaptation.picNumberOnScreen * 2 + preloadPicNumber); i++)
         {
             GreatPic();
         }
@@ -58,7 +49,7 @@ public class SpawnPicture : MonoBehaviour
         {
             GreatPic();
             GreatPic();
-            borderForSpawnPic += picSize;
+            borderForSpawnPic += DeviceAdaptation.picSize;
             
         }
     }
@@ -78,6 +69,6 @@ public class SpawnPicture : MonoBehaviour
     // метод увеличения области спавна
     private void ResizeContentArea()
     {
-        contentAreaRT.sizeDelta = new Vector2(contentAreaRT.sizeDelta.x, contentAreaRT.sizeDelta.y + picSize);
+        contentAreaRT.sizeDelta = new Vector2(contentAreaRT.sizeDelta.x, contentAreaRT.sizeDelta.y + DeviceAdaptation.picSize);
     }
 }

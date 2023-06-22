@@ -39,6 +39,7 @@ public class ImageDownloader : MonoBehaviour
         {
             Texture texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
             transform.Find("Image").GetComponent<RawImage>().texture = texture;
+            transform.Find("Image").GetComponent<RawImage>().color= Color.white;
         }
 
         yield break;

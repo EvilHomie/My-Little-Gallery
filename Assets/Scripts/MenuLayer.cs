@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,35 +16,35 @@ public class MenuLayer : MonoBehaviour
     {
         // нахождение объекта с источником
         audioSource = GameObject.FindWithTag("GameManager").GetComponent<AudioSource>();
+        volumeSlider.value = audioSource.volume;
     }
     private void Update()
     {
-        // отслеживание состояния громкости и позунка
+        // отслеживание состояния громкости и ползунка
         audioSource.volume = volumeSlider.value ;
-        ChangeVolumeHandle();
+        ChangeVolumeHandle(audioSource.volume);
     }
 
     // метод визуального изменения ползунка громкости в зависимости от громкости
-    private void ChangeVolumeHandle()
+    private void ChangeVolumeHandle(float volume)
     {
-        if (audioSource.volume == 0)
+        switch (volume)
         {
-            volumHandle.GetComponent<Image>().sprite = volumeImage[0];
-        }
+            case 0:
+                volumHandle.GetComponent<Image>().sprite = volumeImage[0];
+                break;
 
-        else if (audioSource.volume > 0 & audioSource.volume <0.5f)
-        {
-            volumHandle.GetComponent<Image>().sprite = volumeImage[1];
-        }
+            case > 0 and < 0.5f:
+                volumHandle.GetComponent<Image>().sprite = volumeImage[1];
+                break;
 
-        else if (audioSource.volume > 0.5f & audioSource.volume < 1)
-        {
-            volumHandle.GetComponent<Image>().sprite = volumeImage[2];
-        }
+            case > 0.5f and < 1:
+                volumHandle.GetComponent<Image>().sprite = volumeImage[2];
+                break;
 
-        else if (audioSource.volume == 1)
-        {
-            volumHandle.GetComponent<Image>().sprite = volumeImage[3];
+            case 1:
+                volumHandle.GetComponent<Image>().sprite = volumeImage[3];
+                break;
         }
     }
 

@@ -7,7 +7,6 @@ public class PicLoadProgressPanel : MonoBehaviour
 {
     public GameObject loadingScreen;
     public Slider loadBar;
-    public TextMeshProUGUI loadProgressText;
     private ImageDownloader imageDownloaderScript;
 
     
@@ -27,8 +26,6 @@ public class PicLoadProgressPanel : MonoBehaviour
         if (transform.Find("Image").GetComponent<RawImage>().texture == null)
         {
             loadBar.value = imageDownloaderScript.DownloadProgress;
-
-            loadProgressText.text = $"{Math.Truncate(imageDownloaderScript.DownloadProgress * 100)}";
         }
         else
         {

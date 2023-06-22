@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GameManager
   - Pic
+  - AudioManager
   layers:
   - Default
   - TransparentFX

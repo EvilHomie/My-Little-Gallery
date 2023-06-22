@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     
 
-    private void Awake()
+    private void Start()
     {
         DontDestroyOnLoad();
     }
@@ -23,10 +23,21 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+    private void Update()
+    {
+        ChangeScreenOrientationMethod();
+    }
+
+    void ChangeScreenOrientationMethod()
+    {
+        if (SceneManager.GetActiveScene().name == "View")
+        Screen.orientation = ScreenOrientation.AutoRotation;
+        else { Screen.orientation = ScreenOrientation.Portrait; }
+    }
 
     public void OpenLoadScreen()
     {
-        LoadingScene.loadingSceneName = "Gallery";
+        LoadingSceneManager.loadingSceneName = "Gallery";
         SceneManager.LoadScene("LoadScreen");
     }
 
