@@ -16,7 +16,7 @@ public class ViewManager : MonoBehaviour
     // метод для кнопки "вернуться в галлерею"
     public void ReturnToGallery()
     {
-        LoadingSceneManager.loadingSceneName = "Gallery";
+        //LoadingLayer.loadingSceneName = "Gallery";
         SceneManager.LoadScene("LoadScreen");
     }
 }

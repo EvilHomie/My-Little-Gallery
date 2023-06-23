@@ -13,7 +13,7 @@ public class SpawnPicture : MonoBehaviour
     
 
     // получение стартовых ссылок на компоненты и стартовых значений
-    private void Awake()
+    private void OnEnable()
     {
         contentAreaRT = content.GetComponent<RectTransform>();
 
@@ -35,7 +35,7 @@ public class SpawnPicture : MonoBehaviour
     // загрузка начальных картинок ( столько сколько поместится на экране) + кол-во предзагруженных
     private void StarterPics()
     {
-        for (int i = 0; i < (DeviceAdaptation.picNumberOnScreen * 2 + preloadPicNumber); i++)
+        for (int i = 0; i < (DeviceAdaptation.HowManyPicsOnScreen * 2 + preloadPicNumber); i++)
         {
             GreatPic();
         }
@@ -48,7 +48,7 @@ public class SpawnPicture : MonoBehaviour
         {
             GreatPic();
             GreatPic();
-            borderForSpawnPic += DeviceAdaptation.picSize;
+            borderForSpawnPic += DeviceAdaptation.PicSize;
             
         }
     }
@@ -68,6 +68,6 @@ public class SpawnPicture : MonoBehaviour
     // метод увеличения области спавна
     private void ResizeContentArea()
     {
-        contentAreaRT.sizeDelta = new Vector2(contentAreaRT.sizeDelta.x, contentAreaRT.sizeDelta.y + DeviceAdaptation.picSize);
+        contentAreaRT.sizeDelta = new Vector2(contentAreaRT.sizeDelta.x, contentAreaRT.sizeDelta.y + DeviceAdaptation.PicSize);
     }
 }

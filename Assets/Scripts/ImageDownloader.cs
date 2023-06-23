@@ -24,9 +24,8 @@ public class ImageDownloader : MonoBehaviour
         
         while (!request.isDone)
         {
-            //Debug.Log("Progress: " + request.downloadProgress * 100f + "%");
-            DownloadProgress = request.downloadProgress;
             yield return null;
+            DownloadProgress = request.downloadProgress;
         }
 
         if (request.result != UnityWebRequest.Result.Success)
@@ -40,7 +39,6 @@ public class ImageDownloader : MonoBehaviour
             transform.Find("Image").GetComponent<RawImage>().texture = texture;
             transform.Find("Image").GetComponent<RawImage>().color= Color.white;
         }
-
         yield break;
     }
 }

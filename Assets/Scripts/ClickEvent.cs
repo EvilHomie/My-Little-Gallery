@@ -8,18 +8,17 @@ public class ClickEvent : MonoBehaviour
 
     private void Awake()
     {
-        clickArea.onClick.AddListener(loadViewScene); // добавление свойства делающее картинку кликабельной
+        clickArea.onClick.AddListener(OpenPicOnFullScreen); // добавление свойства делающее картинку кликабельной
     }
 
     // метод вызова сцены "Просморт" через сцену загрузки с передачей данных какая картинка была выбрана
-    void loadViewScene()
+    void OpenPicOnFullScreen()
     {
         if (transform.Find("Image").GetComponent<RawImage>().texture != null)
         {
-            LoadingSceneManager.loadingSceneName = "View";
             ViewManager.chosenPic = transform.Find("Image").GetComponent<RawImage>().texture;
             SceneManager.LoadScene("LoadScreen");
-            GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>().ClickSound();
+            GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>().PlayClickSound();
         }
     }
 }
