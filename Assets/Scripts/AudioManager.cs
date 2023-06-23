@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -7,7 +6,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip clickSound;
     private AudioSource audioSource;
 
-    private void Start()
+    private void Awake()
     {
         audioSource = GameObject.FindWithTag("GameManager").GetComponent<AudioSource>();
     }
@@ -16,3 +15,8 @@ public class AudioManager : MonoBehaviour
         audioSource.PlayOneShot(clickSound);
     }
 }
+
+
+
+
+

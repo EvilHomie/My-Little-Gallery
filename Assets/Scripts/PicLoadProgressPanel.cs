@@ -1,15 +1,11 @@
-using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PicLoadProgressPanel : MonoBehaviour
 {
-    public GameObject loadingScreen;
-    public Slider loadBar;
-    private ImageDownloader imageDownloaderScript;
-
-    
+    public GameObject loadingScreen; // ссылка на окно загрузки изображения
+    public Slider loadBar; // ссылка на ползунок с прогрессом загрузки изображения
+    private ImageDownloader imageDownloaderScript; // ссылка на скрипт где происходит загрузка и применение изображения
 
     private void Awake()
     {
@@ -21,6 +17,7 @@ public class PicLoadProgressPanel : MonoBehaviour
         DownloadProgressCalc();
     }
 
+    // метод по отслеживанию прогресса загрузки изображения и отображение состояния на ползунке
     private void DownloadProgressCalc()
     {    
         if (transform.Find("Image").GetComponent<RawImage>().texture == null)

@@ -27,7 +27,6 @@ public class ImageDownloader : MonoBehaviour
             //Debug.Log("Progress: " + request.downloadProgress * 100f + "%");
             DownloadProgress = request.downloadProgress;
             yield return null;
-
         }
 
         if (request.result != UnityWebRequest.Result.Success)

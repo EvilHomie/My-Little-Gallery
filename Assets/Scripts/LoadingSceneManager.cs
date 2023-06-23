@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class LoadingSceneManager : MonoBehaviour
 {
-    public Slider loadBar;
-    public TextMeshProUGUI loadProgressText;
+    public Slider loadBar; // ползунок загрузки
+    public TextMeshProUGUI loadProgressText; // текст с процентами загрузки
 
-    public static string loadingSceneName;
-    private float duration = 2;
+    public static string loadingSceneName; // имя сцены которую нужно загрузить
+    private float duration = 2; // продолжительность показа сцены загрузки
 
     private void Start()
     {
@@ -18,7 +18,7 @@ public class LoadingSceneManager : MonoBehaviour
         StartCoroutine(LoadSceneAsyncWithTimer(loadingSceneName));
     }
 
-    // метод отслеживающий фактическое состояние готовности следующей сцены
+    // метод отслеживающий фактическое состояние готовности следующей сцены (использовать если нужно действительно отслеживать состояние готовности сцены)
     IEnumerator LoadSceneAsync (string sceneName)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
