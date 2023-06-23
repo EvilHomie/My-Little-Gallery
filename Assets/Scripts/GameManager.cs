@@ -5,20 +5,42 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject gallery;
-    [SerializeField] private GameObject menu;
-    [SerializeField] private GameObject loadingLayer;
-    [SerializeField] private GameObject titleMenu;
+    public static GameManager Instance;
 
-    
+    private static MenuLayerManager MenuLayerManagerScript; // ссылка на скрип меню (необходима для понимания активно ли меню)
+
+    private int frameRate = 60; // значение частоты обновления приложения
+
+    private void Awake()
+    {
+        Application.targetFrameRate = frameRate;
+
+        DontDestroyOnLoad();
+
+        if(GameObject.FindWithTag("MenuManager") != null)
+        {
+            MenuLayerManagerScript = GameObject.FindWithTag("MenuManager").GetComponent<MenuLayerManager>();
+        }
+    }
+    void DontDestroyOnLoad()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
     private void Update()
     {
-        //ChangeScreenOrientationMethod();
+        ChangeScreenOrientationMethod();
         
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    NativeControll(SceneManager.GetActiveScene().name, MenuLayerManager.MenuIsActive);
-        //}
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            NativeControll(SceneManager.GetActiveScene().name, MenuLayerManager.menuIsActive);
+        }
     }
 
     // метод по изменению ориентации экрана в зависимотси от сцены
@@ -30,12 +52,10 @@ public class GameManager : MonoBehaviour
     }
 
     // метод для кнопки "открыть галлерею"
-    public void OpenGallery()
+    public void OpenLoadScreen()
     {
-        titleMenu.SetActive(false);
-        gallery.SetActive(true);
-        loadingLayer.SetActive(true);
-
+        LoadingSceneManager.loadingSceneName = "Gallery";
+        SceneManager.LoadScene("LoadScreen");
     }
 
     // метод для кнопки "Выйти" 
@@ -53,7 +73,7 @@ public class GameManager : MonoBehaviour
     {
         if (sceneName == "View")
         {
-            //LoadingLayer.loadingSceneName = "Gallery";
+            LoadingSceneManager.loadingSceneName = "Gallery";
             SceneManager.LoadScene("LoadScreen");
         }
 
@@ -61,7 +81,7 @@ public class GameManager : MonoBehaviour
         {
             if (menuIsActive)
             {
-                menu.GetComponent<MenuLayerManager>().CloseMenu();
+                MenuLayerManagerScript.CloseMenu();
             }
             else { Application.Quit(); }
         }
