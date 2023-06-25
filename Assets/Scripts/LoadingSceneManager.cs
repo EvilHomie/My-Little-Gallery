@@ -10,7 +10,7 @@ public class LoadingSceneManager : MonoBehaviour
     public TextMeshProUGUI loadProgressText; // текст с процентами загрузки
 
     public static string loadingSceneName; // имя сцены которую нужно загрузить
-    private float duration = 2; // продолжительность показа сцены загрузки
+    private readonly float duration = 2; // продолжительность показа сцены загрузки
 
     private void Start()
     {
@@ -19,13 +19,13 @@ public class LoadingSceneManager : MonoBehaviour
     }
 
     // метод отслеживающий фактическое состояние готовности следующей сцены (использовать если нужно действительно отслеживать состояние готовности сцены)
-    IEnumerator LoadSceneAsync (string sceneName)
+    IEnumerator LoadSceneAsync(string sceneName)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
 
         while (!operation.isDone)
         {
-            float progress = Mathf.Clamp01(operation.progress/ 0.9f);
+            float progress = Mathf.Clamp01(operation.progress / 0.9f);
 
             Debug.Log(progress);
             loadBar.value = progress;

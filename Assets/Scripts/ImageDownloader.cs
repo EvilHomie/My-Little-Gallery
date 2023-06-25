@@ -21,10 +21,9 @@ public class ImageDownloader : MonoBehaviour
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(URL);
         request.SendWebRequest();
-        
+
         while (!request.isDone)
         {
-            //Debug.Log("Progress: " + request.downloadProgress * 100f + "%");
             DownloadProgress = request.downloadProgress;
             yield return null;
         }
@@ -38,7 +37,7 @@ public class ImageDownloader : MonoBehaviour
         {
             Texture texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
             transform.Find("Image").GetComponent<RawImage>().texture = texture;
-            transform.Find("Image").GetComponent<RawImage>().color= Color.white;
+            transform.Find("Image").GetComponent<RawImage>().color = Color.white;
         }
 
         yield break;

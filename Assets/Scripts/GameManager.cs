@@ -1,6 +1,5 @@
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -9,15 +8,11 @@ public class GameManager : MonoBehaviour
 
     private static MenuLayerManager MenuLayerManagerScript; // ссылка на скрип меню (необходима для понимания активно ли меню)
 
-    private int frameRate = 60; // значение частоты обновления приложения
-
     private void Awake()
     {
-        Application.targetFrameRate = frameRate;
-
         DontDestroyOnLoad();
 
-        if(GameObject.FindWithTag("MenuManager") != null)
+        if (GameObject.FindWithTag("MenuManager") != null)
         {
             MenuLayerManagerScript = GameObject.FindWithTag("MenuManager").GetComponent<MenuLayerManager>();
         }
@@ -36,10 +31,10 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         ChangeScreenOrientationMethod();
-        
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            NativeControll(SceneManager.GetActiveScene().name, MenuLayerManager.menuIsActive);
+            NativeControll(SceneManager.GetActiveScene().name, MenuLayerManager.MenuIsActive);
         }
     }
 
@@ -47,7 +42,7 @@ public class GameManager : MonoBehaviour
     void ChangeScreenOrientationMethod()
     {
         if (SceneManager.GetActiveScene().name == "View")
-        Screen.orientation = ScreenOrientation.AutoRotation;
+            Screen.orientation = ScreenOrientation.AutoRotation;
         else { Screen.orientation = ScreenOrientation.Portrait; }
     }
 

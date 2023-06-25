@@ -19,7 +19,7 @@ public class PicLoadProgressPanel : MonoBehaviour
 
     // метод по отслеживанию прогресса загрузки изображения и отображение состояния на ползунке
     private void DownloadProgressCalc()
-    {    
+    {
         if (transform.Find("Image").GetComponent<RawImage>().texture == null)
         {
             loadBar.value = imageDownloaderScript.DownloadProgress;

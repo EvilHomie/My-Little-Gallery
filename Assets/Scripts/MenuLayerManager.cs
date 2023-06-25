@@ -11,7 +11,7 @@ public class MenuLayerManager : MonoBehaviour
     public GameObject volumHandle; // ссылка на ползунок громкости
     private AudioSource audioSource; // сылка на источник аудио
 
-    public static bool menuIsActive { get; private set; }
+    public static bool MenuIsActive { get; private set; }
 
     private void Start()
     {
@@ -22,7 +22,7 @@ public class MenuLayerManager : MonoBehaviour
     private void Update()
     {
         // отслеживание состояния громкости и ползунка
-        audioSource.volume = volumeSlider.value ;
+        audioSource.volume = volumeSlider.value;
         ChangeVolumeHandle(audioSource.volume);
     }
 
@@ -63,13 +63,13 @@ public class MenuLayerManager : MonoBehaviour
     public void OpenMenu()
     {
         gameMenu.SetActive(true);
-        menuIsActive = true;
+        MenuIsActive = true;
     }
 
     // метод закрытия меню
     public void CloseMenu()
     {
         gameMenu.SetActive(false);
-        menuIsActive = false;
+        MenuIsActive = false;
     }
 }
