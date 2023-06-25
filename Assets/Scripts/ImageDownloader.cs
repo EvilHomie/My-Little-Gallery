@@ -5,10 +5,14 @@ using UnityEngine.UI;
 
 public class ImageDownloader : MonoBehaviour
 {
+    [SerializeField] private GameObject errorLayer;
+    [SerializeField] private Button errorClickArea;
+
     // URL картинки в момент создания объекта
     private string URL = "http://data.ikppbb.com/test-task-unity-data/pics/" + SpawnPicture.imageCurNum + ".jpg";
 
     public float DownloadProgress { get; private set; } // прогресс загрузки картинки
+    public bool ErrorDownloading { get; private set; } = false;
 
     private void Awake()
     {
@@ -21,24 +25,34 @@ public class ImageDownloader : MonoBehaviour
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(URL);
         request.SendWebRequest();
-        
+
         while (!request.isDone)
         {
-            yield return null;
             DownloadProgress = request.downloadProgress;
+            yield return null;
         }
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError(request.error);
-            StartCoroutine(LoadImage());
+            errorLayer.SetActive(true);
+            ErrorDownloading = true;
+            errorClickArea.onClick.AddListener(RestartLoading);
         }
         else
         {
             Texture texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
             transform.Find("Image").GetComponent<RawImage>().texture = texture;
-            transform.Find("Image").GetComponent<RawImage>().color= Color.white;
+            transform.Find("Image").GetComponent<RawImage>().color = Color.white;
+            errorClickArea.onClick.RemoveAllListeners();
         }
         yield break;
+    }
+
+    // метод по перезапуску корутины в случае ошибки загрузки
+    public void RestartLoading()
+    {        
+        errorClickArea.onClick.RemoveAllListeners();
+        StartCoroutine(LoadImage());
+        errorLayer.SetActive(false);
     }
 }

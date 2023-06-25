@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Picture
   - Image
+  - Viewport
   layers:
   - Default
   - TransparentFX

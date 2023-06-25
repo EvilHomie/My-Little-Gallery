@@ -1,22 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class ViewManager : MonoBehaviour
 {
-    public static Texture chosenPic; // контейнер для картинки которая выбрана для просмотра
+    private Transform parent;
 
-    public RawImage picture; // ссылка на объект где будет изображение
+    int m_IndexNumber;
 
-    private void Start()
+    // Start is called before the first frame update
+    void Awake()
     {
-        picture.texture = chosenPic; // применение изображение к объекту       
+        parent = GameObject.FindWithTag("Viewport").transform;
     }
 
-    // метод для кнопки "вернуться в галлерею"
-    public void ReturnToGallery()
+    // Update is called once per frame
+    void Update()
     {
-        //LoadingLayer.loadingSceneName = "Gallery";
-        SceneManager.LoadScene("LoadScreen");
+        
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            transform.SetParent(parent);
+            transform.SetSiblingIndex(1);
+        }
     }
 }

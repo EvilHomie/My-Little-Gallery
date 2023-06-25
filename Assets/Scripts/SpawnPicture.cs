@@ -7,9 +7,10 @@ public class SpawnPicture : MonoBehaviour
     private RectTransform contentAreaRT; // ссылка на размеры и позицию области спавна картинок
 
     public static int imageCurNum; // номер картинки
-    private int imageMaxNum = 66; // максимальное кол-во картинок (но лучше бы реализовать через hhtp), что бы автоматически менялось при запуске приложения.
-    private int preloadPicNumber = 2; // кол-во предзагруженных картинок (т.е. за пределами экрана устройства)    
+    private readonly int imageMaxNum = 66; // максимальное кол-во картинок (но лучше бы реализовать через hhtp), что бы автоматически менялось при запуске приложения.
+    private readonly int preloadPicNumber = 2; // кол-во предзагруженных картинок (т.е. за пределами экрана устройства)    
     private float borderForSpawnPic; // позиция верхней рамки зоны спавна
+    private readonly float defPicSize = 510;
     
 
     // получение стартовых ссылок на компоненты и стартовых значений
@@ -17,20 +18,16 @@ public class SpawnPicture : MonoBehaviour
     {
         contentAreaRT = content.GetComponent<RectTransform>();
 
-        borderForSpawnPic = contentAreaRT.position.y;
-
         imageCurNum = 1;
-
         StarterPics();
+        borderForSpawnPic = contentAreaRT.position.y;
     }
 
     // отслеживание изменений позиции зоны спавна картинок 
     private void Update()
     {
-        GreatMorePics();        
-    }
-
-    
+        GreatMorePics();
+    }    
 
     // загрузка начальных картинок ( столько сколько поместится на экране) + кол-во предзагруженных
     private void StarterPics()
@@ -49,7 +46,6 @@ public class SpawnPicture : MonoBehaviour
             GreatPic();
             GreatPic();
             borderForSpawnPic += DeviceAdaptation.PicSize;
-            
         }
     }
 
@@ -68,6 +64,7 @@ public class SpawnPicture : MonoBehaviour
     // метод увеличения области спавна
     private void ResizeContentArea()
     {
-        contentAreaRT.sizeDelta = new Vector2(contentAreaRT.sizeDelta.x, contentAreaRT.sizeDelta.y + DeviceAdaptation.PicSize);
+        contentAreaRT.sizeDelta = new Vector2(contentAreaRT.sizeDelta.x, contentAreaRT.sizeDelta.y + defPicSize);
+        Debug.Log($"contentAreaRT {contentAreaRT.sizeDelta}");
     }
 }

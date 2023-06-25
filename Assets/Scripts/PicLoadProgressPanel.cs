@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,23 +11,20 @@ public class PicLoadProgressPanel : MonoBehaviour
     private void Awake()
     {
         imageDownloaderScript = gameObject.GetComponent<ImageDownloader>();
+        StartCoroutine(DownloadProgressCalc());
     }
 
-    private void Update()
-    {
-        DownloadProgressCalc();
-    }
 
     // метод по отслеживанию прогресса загрузки изображения и отображение состояния на ползунке
-    private void DownloadProgressCalc()
+    IEnumerator DownloadProgressCalc()
     {    
-        if (transform.Find("Image").GetComponent<RawImage>().texture == null)
+        while(transform.Find("Image").GetComponent<RawImage>().texture == null)
         {
+            yield return null;
             loadBar.value = imageDownloaderScript.DownloadProgress;
         }
-        else
-        {
-            loadingScreen.SetActive(false);
-        }
+
+        loadingScreen.SetActive(false);
+        
     }
 }

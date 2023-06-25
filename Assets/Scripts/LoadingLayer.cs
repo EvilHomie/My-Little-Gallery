@@ -10,7 +10,7 @@ public class LoadingLayer : MonoBehaviour
     [SerializeField] private Slider loadBar; // ползунок загрузки
     [SerializeField] private TextMeshProUGUI loadProgressText; // текст с процентами загрузки
     private GameObject[] picArray;
-    public List<bool> downloadIsDone;
+    public List<bool> downloadIsDoneForAll;
 
     private void OnEnable()
     {
@@ -22,7 +22,7 @@ public class LoadingLayer : MonoBehaviour
     // метод отслеживающий фактическое состояние готовности сцены (проверка все ли начальные картинки загружены)
     IEnumerator CallcMethod()
     {
-        while (downloadIsDone.Count != picArray.Length)
+        while (downloadIsDoneForAll.Count != picArray.Length)
         {
             StartPicsDownloadProgress();
             yield return null;
@@ -35,16 +35,21 @@ public class LoadingLayer : MonoBehaviour
     {
         float everageDownload = 0;
         float downloadProgressSumm = 0;
-        downloadIsDone.Clear();
+        downloadIsDoneForAll.Clear();
 
         foreach (GameObject pic in picArray)
         {
             downloadProgressSumm += pic.GetComponent<ImageDownloader>().DownloadProgress;
             everageDownload = downloadProgressSumm / picArray.Length;
+
+            if(pic.GetComponent<ImageDownloader>().ErrorDownloading)
+            {
+                downloadIsDoneForAll.Add(true);
+            }
             
             if(pic.transform.Find("Image").GetComponent<RawImage>().texture != null)
             {
-                downloadIsDone.Add(true);
+                downloadIsDoneForAll.Add(true);
             }
         }
         loadBar.value = everageDownload;
