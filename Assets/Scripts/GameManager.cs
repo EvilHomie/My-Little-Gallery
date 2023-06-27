@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         //ChangeScreenOrientationMethod();
-        
+
         //if (Input.GetKeyDown(KeyCode.Escape))
         //{
         //    NativeControll(SceneManager.GetActiveScene().name, MenuLayerManager.MenuIsActive);
@@ -51,7 +51,11 @@ public class GameManager : MonoBehaviour
     // метод по отслеживанию нативных кнопок в устройстве и действия в зависимости от происходящего на экране
     void NativeControll(string sceneName, bool menuIsActive)
     {
-        if (sceneName == "View")
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+
+        }
+            if (sceneName == "View")
         {
             //LoadingLayer.loadingSceneName = "Gallery";
             SceneManager.LoadScene("LoadScreen");

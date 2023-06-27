@@ -9,7 +9,7 @@ public class ImageDownloader : MonoBehaviour
     [SerializeField] private Button errorClickArea;
 
     // URL картинки в момент создания объекта
-    private string URL = "http://data.ikppbb.com/test-task-unity-data/pics/" + SpawnPicture.imageCurNum + ".jpg";
+    private string URL = "http://data.ikppbb.com/test-task-unity-data/pics/" + SpawnPicture.ImageCurNum + ".jpg";
 
     public float DownloadProgress { get; private set; } // прогресс загрузки картинки
     public bool ErrorDownloading { get; private set; } = false;
