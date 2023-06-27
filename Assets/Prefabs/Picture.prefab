@@ -127,7 +127,6 @@ GameObject:
   - component: {fileID: 1622368194418063347}
   - component: {fileID: 5198522774187225290}
   - component: {fileID: 4289259156243111339}
-  - component: {fileID: 3019230375474065655}
   m_Layer: 5
   m_Name: Picture
   m_TagString: Picture
@@ -187,19 +186,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   errorLayer: {fileID: 857641525416631682}
   errorClickArea: {fileID: 2845439258171040577}
---- !u!114 &3019230375474065655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1785486170819711996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 654950fdcadaa28469c4de4185a3dabe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PicClickArea: {fileID: 5526611213920047666}
 --- !u!1 &1961225172890273250
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,10 +778,10 @@ RectTransform:
   m_Father: {fileID: 1622368194418063347}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5576648444339839632
 CanvasRenderer:

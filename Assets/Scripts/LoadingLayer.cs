@@ -15,7 +15,13 @@ public class LoadingLayer : MonoBehaviour
     private void OnEnable()
     {
         picArray = GameObject.FindGameObjectsWithTag("Picture");
-        StartCoroutine(CallcMethod());
+
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            loadBar.gameObject.SetActive(false);
+            transform.Find("Start Error").gameObject.SetActive(true);
+        }
+        else { StartCoroutine(CallcMethod()); }
     }
 
 
@@ -24,14 +30,14 @@ public class LoadingLayer : MonoBehaviour
     {
         while (downloadIsDoneForAll.Count != picArray.Length)
         {
-            StartPicsDownloadProgress();
+            PicsDownloadProgress();
             yield return null;
         }
         gameObject.SetActive(false);
         yield break;
     }
 
-    void StartPicsDownloadProgress()
+    void PicsDownloadProgress()
     {
         float everageDownload = 0;
         float downloadProgressSumm = 0;

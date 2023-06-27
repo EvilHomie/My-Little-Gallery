@@ -1,98 +1,82 @@
 using System;
 using System.Collections;
-using System.Net;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public class ClickEvent : MonoBehaviour
 {
     [SerializeField] private Button PicClickArea; // кликабельная область у картинки
-    private GameObject parentForView;
-    private GameObject deffParent;
-    private GridLayoutGroup contentGLG;
-    private bool onFullScreen = false;
-    private bool translateDone = false;
-    private Vector2 defPos;
-    private Vector2 posInCentre;
-    private readonly float animSpeed = 1f;
+    private DeviceAdaptation dAScript; // ссылка на скрип с данными об устройстве
+    private GameObject parentForView; // объект в котором будет происходить обзор
+    private GameObject deffParent; // объект в которм находится картинка по умолчанию
+    private bool onFullScreen = false; // развернута ли картнка
+    private bool translateDone = true; // завершен ли процесс разворачивания для просмотра
+    private Vector2 defPos; // начальная позиция картинки
+    private readonly float animSpeed = 20; // скорость с которой происходит разворачивание и сворачивание картинки
 
-    private float scaleOnFullScreen;
-    private double UIScale;
-    private float UIW;
-    private float UIH;
+    private float scaleOnFullScreen; // коэфициент умножения при разворачивании
 
     private void OnEnable()
     {
-        //Screen.orientation = ScreenOrientation.AutoRotation;
-
-        PicClickArea.onClick.AddListener(Clicked); // добавление свойства делающее картинку кликабельной
+        //получение ссылок на объекты
+        dAScript = GameObject.FindWithTag("GameManager").GetComponent<DeviceAdaptation>();
         parentForView = GameObject.FindWithTag("Viewport");
-        deffParent = transform.parent.gameObject;
-        //posInCentre = DeviceAdaptation.ScreenCenter;
-        contentGLG = GameObject.FindWithTag("Content").GetComponent<GridLayoutGroup>();
 
-        scaleOnFullScreen = Screen.width / contentGLG.cellSize.x;
-
-        GridLayoutGroupAdaptation();
-
-        //Debug.Log("Enabled");
-
+        PicClickArea.onClick.AddListener(Clicked); // добавление свойства делающее картинку кликабельной        
+        deffParent = transform.parent.gameObject; // присваивание начальной позиции
     }
     private void Update()
     {
+        ScaleFullScreenCalc();
         DefPosTracking();
     }
 
-    void GridLayoutGroupAdaptation()
+    void ScaleFullScreenCalc() // изменение scaleOnFullScreen в зависимости от ориентации устройства
     {
-        UIW = Screen.width;
-        UIH = Screen.height;
-
-        UIScale = Math.Sqrt((UIW / 1080f) * (UIH / 2160));
-
-
-
+        if (Screen.orientation == ScreenOrientation.Portrait || Screen.orientation == ScreenOrientation.PortraitUpsideDown)
+        {
+            scaleOnFullScreen = Screen.width / dAScript.CellSize / dAScript.UIScale;
+        }
+        else { scaleOnFullScreen = Screen.height / dAScript.CellSize / dAScript.UIScale; }
     }
 
-
-    // метод вызова сцены "Просморт" через сцену загрузки с передачей данных какая картинка была выбрана
-    void Clicked()
+    void Clicked() // что происходит при клике 
     {
-        Debug.Log("Click");
-        //if ((gameObject.GetComponent<RawImage>().texture != null) & !onFullScreen)
-        //{
-        //    StartCoroutine(TransformToCenter());
-        //}
-        //else if ((gameObject.GetComponent<RawImage>().texture != null) & onFullScreen)
-        //{
-        //    StartCoroutine(ReturnFromCenter());
-        //}
+        // запуск метода разворота картинки на весь экран
+        if ((gameObject.GetComponent<RawImage>().texture != null) & !onFullScreen)
+        {
+            StartCoroutine(TransformToCenter());
+        }
+        // запуск метода возвращения картинки к начальному состоянию
+        else if ((gameObject.GetComponent<RawImage>().texture != null) & onFullScreen)
+        {
+            StartCoroutine(ReturnFromCenter());
+        }
     }
 
-    IEnumerator TransformToCenter()
+    IEnumerator TransformToCenter() // процесс разворачивания картинки на весь экран
     {
         translateDone = false;
-        float startDistance = Vector2.Distance(transform.position, posInCentre);
+        float startDistance = Vector2.Distance(transform.position, dAScript.ScreenCenter);
         ChangeParent(parentForView.transform, 1);
+        yield return null;
 
         while (!translateDone)
         {
-            Translate(transform.position, posInCentre);
-            ReScaleImage(LerpTCalc(startDistance, posInCentre));
+            Translate(transform.position, dAScript.ScreenCenter);
+            ReScaleImage(LerpTCalc(startDistance, dAScript.ScreenCenter));
             yield return null;
         }
-        Screen.orientation = ScreenOrientation.AutoRotation;
         onFullScreen = true;
         yield break;
     }
 
-    IEnumerator ReturnFromCenter()
+    IEnumerator ReturnFromCenter() // процесс сворачивания картинки 
     {
         translateDone = false;
         float startDistance = Vector2.Distance(transform.position, defPos);
+        ChangeParent(deffParent.transform, 0);
+        yield return null;
 
         while (!translateDone)
         {
@@ -101,18 +85,17 @@ public class ClickEvent : MonoBehaviour
             yield return null;
         }
 
-        ChangeParent(deffParent.transform, 0);
-        Screen.orientation = ScreenOrientation.Portrait;
+
         onFullScreen = false;
         yield break;
     }
 
-    void DefPosTracking()
+    void DefPosTracking() // отслеживание координат начальной позиции картинки
     {
         defPos = deffParent.transform.position;
     }
 
-    void Translate(Vector2 from, Vector2 to)
+    void Translate(Vector2 from, Vector2 to) // метод перемещения картинки
     {
         transform.position = Vector2.MoveTowards(from, to, animSpeed);
 
@@ -123,32 +106,24 @@ public class ClickEvent : MonoBehaviour
         else { translateDone = false; }
     }
 
-
-    void ReScaleImage(float t)
+    void ReScaleImage(float t) //метод изменения размера картинки
     {
         Vector3 defScale = new(1, 1, 1);
         Vector3 fullScreenScale = defScale * scaleOnFullScreen;
 
         gameObject.transform.localScale = Vector3.Lerp(defScale, fullScreenScale, t);
-
-        //Vector2 defSize = gameObject.GetComponent<RectTransform>().sizeDelta;
-        //Vector2 maxSize = new(Screen.width * 0.5f, Screen.width * 0.5f);
-        //gameObject.GetComponent<RectTransform>().sizeDelta = Vector2.Lerp(defSize, maxSize, t);
-
     }
 
-    void ChangeParent(Transform newParent, int indexInParent)
+    void ChangeParent(Transform newParent, int indexInParent) // метод переключения "родителей"
     {
         transform.SetParent(newParent);
         transform.SetSiblingIndex(indexInParent);
     }
 
-    float LerpTCalc(float startDistance, Vector2 endPoint)
+    float LerpTCalc(float startDistance, Vector2 endPoint) // отслеживание состояния перемещения картинки к центру и обратно
     {
-
         float curentDistance = Vector2.Distance(transform.position, endPoint);
         float lerpT = Math.Abs(curentDistance / startDistance - 1);
-        Debug.Log(lerpT);
         return lerpT;
     }
 }

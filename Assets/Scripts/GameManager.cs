@@ -13,20 +13,7 @@ public class GameManager : MonoBehaviour
     
     private void Update()
     {
-        //ChangeScreenOrientationMethod();
-
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    NativeControll(SceneManager.GetActiveScene().name, MenuLayerManager.MenuIsActive);
-        //}
-    }
-
-    // метод по изменению ориентации экрана в зависимотси от сцены
-    void ChangeScreenOrientationMethod()
-    {
-        if (SceneManager.GetActiveScene().name == "View")
-        Screen.orientation = ScreenOrientation.AutoRotation;
-        else { Screen.orientation = ScreenOrientation.Portrait; }
+        NativeControll();
     }
 
     // метод для кнопки "открыть галлерею"
@@ -35,7 +22,6 @@ public class GameManager : MonoBehaviour
         titleMenu.SetActive(false);
         gallery.SetActive(true);
         loadingLayer.SetActive(true);
-
     }
 
     // метод для кнопки "Выйти" 
@@ -49,30 +35,28 @@ public class GameManager : MonoBehaviour
     }
 
     // метод по отслеживанию нативных кнопок в устройстве и действия в зависимости от происходящего на экране
-    void NativeControll(string sceneName, bool menuIsActive)
+    void NativeControll()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-
-        }
-            if (sceneName == "View")
-        {
-            //LoadingLayer.loadingSceneName = "Gallery";
-            SceneManager.LoadScene("LoadScreen");
-        }
-
-        if (sceneName == "Gallery")
-        {
-            if (menuIsActive)
+            if (menu.activeSelf)
             {
-                menu.GetComponent<MenuLayerManager>().CloseMenu();
+                menu.SetActive(false);
             }
-            else { Application.Quit(); }
-        }
 
-        if (sceneName == "MainMenu")
-        {
-            Application.Quit();
-        }
+            else { Application.Quit(); }
+        }        
+    }
+
+    // метод открытия меню
+    public void OpenMenu()
+    {
+        menu.SetActive(true);
+    }
+
+    // метод закрытия меню
+    public void CloseMenu()
+    {
+        menu.SetActive(false);
     }
 }
