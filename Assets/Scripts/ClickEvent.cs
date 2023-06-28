@@ -59,6 +59,7 @@ public class ClickEvent : MonoBehaviour
         translateDone = false;
         float startDistance = Vector2.Distance(transform.position, dAScript.ScreenCenter);
         ChangeParent(parentForView.transform, 1);
+        deffParent.transform.Find("Frame").gameObject.SetActive(false);
         yield return null;
 
         while (!translateDone)
@@ -84,7 +85,7 @@ public class ClickEvent : MonoBehaviour
             ReScaleImage(Math.Abs(LerpTCalc(startDistance, defPos) - 1));
             yield return null;
         }
-
+        deffParent.transform.Find("Frame").gameObject.SetActive(true);
 
         onFullScreen = false;
         yield break;
